@@ -1,15 +1,29 @@
-let pianoContainer = document.getElementsByClassName("piano-container");
+const pianoContainer = document.querySelector(".piano-container");
 const base = "./audio/";
+
 window.onload = () => {
-  //24keys
-  for (let index = 1; index <= 24; index++) {
-    let div = document.createElement("div");
-    div.classList.add("key", index <= 10 ? "black-key" : "white-key");
-    //For playing audio on click
-    const number = index <= 9 ? "0" + index : index;
+  const createPianoKey = (index) => {
+    const div = document.createElement("div");
+    const isBlackKey = index > 10;
+    const keyTypeClass = isBlackKey ? "black-key" : "white-key";
+
+    div.classList.add("key", keyTypeClass);
+
+    const number = index <= 9 ? `0${index}` : index;
+
     div.addEventListener("click", () => {
-      new Audio(`${base}key${number}.mp3`).play();
+      playAudio(`key${number}.mp3`);
     });
-    pianoContainer[0].appendChild(div);
+
+    pianoContainer.appendChild(div);
+  };
+
+  const playAudio = (filename) => {
+    new Audio(`${base}${filename}`).play();
+  };
+
+  // Generate piano keys
+  for (let index = 1; index <= 24; index++) {
+    createPianoKey(index);
   }
 };
